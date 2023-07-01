@@ -35,7 +35,7 @@ const Home = () => {
             Immerse yourself in specialized events, guided by experts issuing
             ERC1155 tokens. Embrace personal growth and enlightenment through
             engaging experiences. InnerSerenity empowers you to find balance,
-            harmony, and inner peace.
+            harmony, and inner peace. 
             <p className="mt-5">
               Join us now and unlock the gateway to your InnerSerenity. Experience
               the transformative potential of blockchain technology, as we create
