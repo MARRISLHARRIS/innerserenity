@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-
+import { Oval, } from "react-loader-spinner";
 export default function Navbar() {
   const navigate = useNavigate();
   const [isConnected, setIsConnected] = useState(false);
+  const [loading, setLoading] = useState(false);
   const url = import.meta.env.VITE_APP_BACKEND_URL;
   //to:connect metamask
   const connect = async () => {
     try {
+      setLoading(true);
       const connector = new MetaMaskConnector();
       const account = await connector.connect();
       localStorage.setItem("useraddress", account.account);
@@ -16,20 +18,21 @@ export default function Navbar() {
       fetch(`${url}/api/getuser/${account.account}`)
         .then((res) => res.json())
         .then((data) => {
-          if ('Item' in data.response) {
+          if ("Item" in data.response) {
             navigate("/professionals");
           } else {
             fetch(`${url}/api/getprofessional/${account.account}`)
               .then((res) => res.json())
               .then((data) => {
-                if('Item' in data.response) {
-                  navigate("/users")
+                if ("Item" in data.response) {
+                  navigate("/users");
                 } else {
-                  navigate("/register")
+                  navigate("/register");
                 }
               });
           }
         });
+      setLoading(false);
     } catch (error) {
       console.error(error);
     }
@@ -65,24 +68,47 @@ export default function Navbar() {
         </Link>
 
         <div className="mx-5">
-          {isConnected ? (
+          {loading ? (
             <>
-              <button
-                className="m bg-gray-300 text-black font-bold rounded-full px-4 py-2 flex items-center"
-                onClick={disconnect}
-              >
-                Disconnect wallet
-              </button>
+              <div className="bg-gray-300 text-black font-bold rounded-full w-40">
+                <div className="flex justify-center items-center">
+                  <Oval
+                    height={40}
+                    width={40}
+                    color="#4fa94d"
+                    wrapperStyle={{}}
+                    wrapperClass=""
+                    visible={true}
+                    ariaLabel="oval-loading"
+                    secondaryColor="#4fa94d"
+                    strokeWidth={2}
+                    strokeWidthSecondary={2}
+                  />
+                </div>
+              </div>
             </>
           ) : (
             <>
-              <button
-                className="m bg-green-300 text-black font-bold rounded-full px-4 py-2 flex items-center"
-                onClick={connect}
-              >
-                {/* <img className="w-8 hidden lg:block" src="../metafox.png" alt="metaMask-logo" /> */}
-                Connect wallet
-              </button>
+              {isConnected ? (
+                <>
+                  <button
+                    className="m bg-gray-300 text-black font-bold rounded-full px-4 py-2 flex items-center"
+                    onClick={disconnect}
+                  >
+                    Disconnect wallet
+                  </button>
+                </>
+              ) : (
+                <>
+                  <button
+                    className="m bg-green-300 text-black font-bold rounded-full px-4 py-2 flex items-center"
+                    onClick={connect}
+                  >
+                    {/* <img className="w-8 hidden lg:block" src="../metafox.png" alt="metaMask-logo" /> */}
+                    Connect wallet
+                  </button>
+                </>
+              )}
             </>
           )}
         </div>
