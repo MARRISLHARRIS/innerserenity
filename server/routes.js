@@ -114,39 +114,73 @@ router.get("/getprofessional/:address", async (req,res) => {
 
 //to initiate chat
 
-router.post("/updateuser", async (req, res) => {
-  try {
-    // const comm = new GetCommand({
-    //   TableName: "innerserenity_chat",
-    //   Key: {
-    //     useraddress:"ABCDEF01224"
-    //   }
-    // });
+// router.post("/updateuser", async (req, res) => {
+//   try {
+//     const command = new UpdateCommand({
+//       TableName: "innerserenity_chat",
+//       Key: {
+//         useraddress: "12345",
+//       },
+//       UpdateExpression: "SET #oldchat = list_append(#oldchat, :new)",
+//       ExpressionAttributeNames: {
+//         "#oldchat" : "chat"
+//       },
+//       ExpressionAttributeValues: {
+//         ":new": ["hello"]
+//       },
+//       ReturnValues: "UPDATED_NEW",
+//     });
   
-    // const oldcon = await docClient.send(comm);
-    // const oldname = oldcon['Item']['name']
-    // console.log(oldname)
-    const command = new UpdateCommand({
-      TableName: "innerserenity_chat",
+//     const response = await docClient.send(command);
+//     // console.log(response);
+//     res.status(201).json(response);
+//   } catch (error) {
+//     res.status(500).json({ msg: error });
+//   }
+// });
+
+
+router.post("/updaterating/:address", async (req,res) => {
+  try {
+    const {address:useraddress} = req.params;
+    const comm = new UpdateCommand({
+      TableName: "innerserenity_professionals",
       Key: {
-        useraddress: "12345",
+        useraddress: useraddress,
       },
-      UpdateExpression: "SET #oldchat = list_append(#oldchat, :new)",
-      ExpressionAttributeNames: {
-        "#oldchat" : "chat"
+      UpdateExpression: "set #oldrating = :newrating",
+      ExpressionAttributeNames:{
+          "#oldrating" : "totalRatings"
       },
       ExpressionAttributeValues: {
-        ":new": ["hello"]
+        ":newrating": req.body.totalRatings,
       },
-      ReturnValues: "UPDATED_NEW",
+      ReturnValues: "ALL_NEW",
     });
   
+    const resp = await docClient.send(comm);
+
+
+    const command = new UpdateCommand({
+      TableName: "innerserenity_professionals",
+      Key: {
+        useraddress: useraddress,
+      },
+      UpdateExpression: "set #oldrating = :newrating",
+      ExpressionAttributeNames:{
+          "#oldrating" : "totalScore"
+      },
+      ExpressionAttributeValues: {
+        ":newrating": req.body.totalScore,
+      },
+      ReturnValues: "ALL_NEW",
+    });
     const response = await docClient.send(command);
-    // console.log(response);
     res.status(201).json(response);
-  } catch (error) {
+
+  } catch(error) {
     res.status(500).json({ msg: error });
   }
-});
+})
 
 export default router;

@@ -42,7 +42,7 @@ export default function Allusers() {
                 type="search"
                 name="name"
                 id=""
-                placeholder="search a user by name"
+                placeholder="Search a user by name"
                 className="w-ful px-4 py-3 rounded-lg bg-white mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
                 required
                 onChange={filterusers}

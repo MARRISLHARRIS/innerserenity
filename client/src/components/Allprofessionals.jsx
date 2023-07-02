@@ -41,7 +41,7 @@ export default function Allprofessionals() {
                 type="search"
                 name="name"
                 id=""
-                placeholder="search based on specialization"
+                placeholder="Search based on specialization"
                 className="w-72 px-4 py-3 rounded-lg bg-white mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
                 required
                 onChange={filterusers}
