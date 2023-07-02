@@ -54,7 +54,7 @@ export default function Navbar() {
       <div className="flex items-center justify-between p-3 bg-gray-800">
         <Link to="/">
           <div className="flex items-center">
-            <img style={{ width: "3rem" }} src="../logo.png" alt="logo" />
+            <img style={{ width: "3rem" }} src="/logo.png" alt="logo" />
             <p
               className="text-2xl font-bold text-white"
               style={{ fontFamily: "cursive" }}

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import Loader from "./Loader";
 import User from "./User";
 export default function Allusers() {
@@ -52,12 +53,17 @@ export default function Allusers() {
                 <>
                   {filteredusers.map((user, index) => {
                     return (
-                      <User
+                      <Link
+                        to={`/chat/u/${user.useraddress}`}
+                        state={{ name: user.name,gende:user.gender }}
                         key={index}
-                        name={user.name}
-                        age={user.age}
-                        gender={user.gender}
-                      />
+                      >
+                        <User
+                          name={user.name}
+                          age={user.age}
+                          gender={user.gender}
+                        />
+                      </Link>
                     );
                   })}
                 </>
@@ -71,12 +77,17 @@ export default function Allusers() {
                     <>
                       {users.map((user, index) => {
                         return (
-                          <User
+                          <Link
+                            to={`/chat/u/${user.useraddress}`}
+                            state={{ name: user.name,gender:user.gender }}
                             key={index}
-                            name={user.name}
-                            age={user.age}
-                            gender={user.gender}
-                          />
+                          >
+                            <User
+                              name={user.name}
+                              age={user.age}
+                              gender={user.gender}
+                            />
+                          </Link>
                         );
                       })}
                     </>

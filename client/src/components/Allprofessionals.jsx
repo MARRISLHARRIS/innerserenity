@@ -54,6 +54,7 @@ export default function Allprofessionals() {
                     return (
                       <Professional
                         key={index}
+                        useraddress={user.useraddress}
                         name={user.name}
                         specialization={user.specialization}
                         available={user.available}
@@ -78,6 +79,7 @@ export default function Allprofessionals() {
                         return (
                           <Professional
                             key={index}
+                            useraddress={user.useraddress}
                             name={user.name}
                             specialization={user.specialization}
                             available={user.available}

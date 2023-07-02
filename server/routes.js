@@ -1,6 +1,6 @@
 import express from "express";
 import { DynamoDBClient, CreateTableCommand } from "@aws-sdk/client-dynamodb";
-import { PutCommand, DynamoDBDocumentClient, GetCommand, ScanCommand } from "@aws-sdk/lib-dynamodb";
+import { PutCommand, DynamoDBDocumentClient, GetCommand, ScanCommand, UpdateCommand } from "@aws-sdk/lib-dynamodb";
 
 // import { createOrUpdate, deleteUserById, getUserById, readAllUsers } from './db.js'
 
@@ -112,5 +112,41 @@ router.get("/getprofessional/:address", async (req,res) => {
     }
 })
 
+//to initiate chat
+
+router.post("/updateuser", async (req, res) => {
+  try {
+    // const comm = new GetCommand({
+    //   TableName: "innerserenity_chat",
+    //   Key: {
+    //     useraddress:"ABCDEF01224"
+    //   }
+    // });
+  
+    // const oldcon = await docClient.send(comm);
+    // const oldname = oldcon['Item']['name']
+    // console.log(oldname)
+    const command = new UpdateCommand({
+      TableName: "innerserenity_chat",
+      Key: {
+        useraddress: "12345",
+      },
+      UpdateExpression: "SET #oldchat = list_append(#oldchat, :new)",
+      ExpressionAttributeNames: {
+        "#oldchat" : "chat"
+      },
+      ExpressionAttributeValues: {
+        ":new": ["hello"]
+      },
+      ReturnValues: "UPDATED_NEW",
+    });
+  
+    const response = await docClient.send(command);
+    // console.log(response);
+    res.status(201).json(response);
+  } catch (error) {
+    res.status(500).json({ msg: error });
+  }
+});
 
 export default router;

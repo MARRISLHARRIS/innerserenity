@@ -4,14 +4,17 @@ import CreateProfessional from "./CreateProfessional";
 
 // import { Link, useNavigate } from "react-router-dom";
 export default function Register() {
-//   const navigate = useNavigate();
-  
+  //   const navigate = useNavigate();
+
   const [type, setType] = useState("");
   return (
-    <>
-      <div className="flex flex-col  justify-center items-center mt-5">
+    <div className="flex justify-center items-center">
+      <div className="w-1/2 mt-12  -me-40 hidden lg:block">
+        <img src="../reg.png" />
+      </div>
+      <div className="flex flex-col  justify-center items-center h-[11/12] mt-32 lg:mt-0 " >
         <div>
-          <p className="font-bold text-3xl">select your role</p>
+          <p className="font-bold text-4xl">select your role</p>
         </div>
         <div className="flex justify-between gap-5 mt-5">
           <button
@@ -46,9 +49,9 @@ export default function Register() {
                 </>
               ) : (
                 <>
-                    <div>
-                        <CreateProfessional />
-                    </div>
+                  <div>
+                    <CreateProfessional />
+                  </div>
                 </>
               )}
             </>
@@ -57,6 +60,6 @@ export default function Register() {
           )}
         </div>
       </div>
-    </>
+    </div>
   );
 }
