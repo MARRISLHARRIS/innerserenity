@@ -70,9 +70,10 @@ export default function CreateProfessional() {
                                 name='available'
                                 className="w-full px-4 py-3 rounded-lg bg-gray-200 mt-2 border focus:border-blue-500 focus:bg-white focus:outline-none"
                                 required
+                                onChange={(e)=> e.target.value == "true" ? setAvailable(true) : setAvailable(false)}
                               >
-                                <option className="bg-gray-200" onClick={()=>setAvailable(true)}>Yes</option>
-                                <option className="bg-gray-200" onClick={()=>setAvailable(false)}>No</option>
+                                <option className="bg-gray-200" value="true">Yes</option>
+                                <option className="bg-gray-200" value="false">No</option>
                               </select>
                             </div>
                           </div>
