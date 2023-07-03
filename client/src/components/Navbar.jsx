@@ -5,6 +5,7 @@ import { Oval, } from "react-loader-spinner";
 export default function Navbar() {
   const navigate = useNavigate();
   const [isConnected, setIsConnected] = useState(false);
+  const [type,setType] = useState("")
   const [loading, setLoading] = useState(false);
   const url = import.meta.env.VITE_APP_BACKEND_URL;
   //to:connect metamask
@@ -20,12 +21,14 @@ export default function Navbar() {
         .then((data) => {
           if ("Item" in data.response) {
             navigate("/professionals");
+            setType("professionals")
           } else {
             fetch(`${url}/api/getprofessional/${account.account}`)
               .then((res) => res.json())
               .then((data) => {
                 if ("Item" in data.response) {
                   navigate("/users");
+                  setType("users")
                 } else {
                   navigate("/register");
                 }
@@ -59,7 +62,7 @@ export default function Navbar() {
           <div className="flex items-center">
             <img style={{ width: "3rem" }} src="/logo.png" alt="logo" />
             <p
-              className="text-2xl font-bold text-white"
+              className="text-xl lg:text-2xl font-bold text-white"
               style={{ fontFamily: "cursive" }}
             >
               InnerSerenity
@@ -67,7 +70,7 @@ export default function Navbar() {
           </div>
         </Link>
 
-        <div className="mx-5">
+        <div className="mx-0 lg:mx-5">
           {loading ? (
             <>
               <div className="bg-gray-300 text-black font-bold rounded-full w-40">
@@ -91,12 +94,26 @@ export default function Navbar() {
             <>
               {isConnected ? (
                 <>
-                  <button
-                    className="m bg-gray-300 text-black font-bold rounded-full px-4 py-2 flex items-center"
-                    onClick={disconnect}
-                  >
-                    Disconnect wallet
-                  </button>
+                  <div className="flex justify-around text-white text-sm lg:text-xl items-center gap-2 lg:gap-5">
+                    <div>
+                      <Link to={`${type}`}>
+                        <p>{type}</p>
+                      </Link>
+                    </div>
+                    <div>
+                      <Link to="/events">
+                        <p>Events</p>
+                      </Link>
+                    </div>
+                    <div>
+                      <button
+                        className=" bg-gray-300 text-black font-bold rounded-full px-1 py-2 lg:px-4 flex items-center text-sm"
+                        onClick={disconnect}
+                      >
+                        Disconnect wallet
+                      </button>
+                    </div>
+                  </div>
                 </>
               ) : (
                 <>

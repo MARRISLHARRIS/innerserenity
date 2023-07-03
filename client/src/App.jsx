@@ -5,6 +5,7 @@ import Register from "./components/Register";
 import Allusers from "./components/Allusers";
 import Allprofessionals from "./components/Allprofessionals"
 import Chatcomp from "./components/Chatcomp";
+import Events from "./components/Events"
 function App() {
   
 
@@ -17,6 +18,7 @@ function App() {
           <Route path="/users" element={<Allusers />} />
           <Route path="/professionals" element={<Allprofessionals />} />
           <Route path="/chat/:type/:address" element={<Chatcomp/>} />
+          <Route path="/events" element={<Events />} />
       </Routes>
     </>
   )
