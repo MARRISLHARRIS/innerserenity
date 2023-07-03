@@ -1,13 +1,34 @@
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { MetaMaskConnector } from "wagmi/connectors/metaMask";
-import { Oval, } from "react-loader-spinner";
+import { Oval } from "react-loader-spinner";
+import Web3 from "web3";
+import EventTicketing from "../../contractsBuilds/Ticketting.json";
+
 export default function Navbar() {
   const navigate = useNavigate();
   const [isConnected, setIsConnected] = useState(false);
-  const [type,setType] = useState("")
+  const [type, setType] = useState("");
   const [loading, setLoading] = useState(false);
+  const [contract, setContract] = useState();
   const url = import.meta.env.VITE_APP_BACKEND_URL;
+
+  const web3Int = () => {
+    return new Promise(async (resolve, reject) => {
+      // metamask
+      if (typeof window.ethereum !== "undefined") {
+        await window.ethereum
+          .send("eth_requestAccounts")
+          .then(() => {
+            resolve(new Web3(window.ethereum));
+          })
+          .catch((err) => {
+            console.log("Error: ", err);
+          });
+      }
+    });
+  };
+
   //to:connect metamask
   const connect = async () => {
     try {
@@ -21,21 +42,30 @@ export default function Navbar() {
         .then((data) => {
           if ("Item" in data.response) {
             navigate("/professionals");
-            setType("professionals")
+            setType("professionals");
           } else {
             fetch(`${url}/api/getprofessional/${account.account}`)
               .then((res) => res.json())
               .then((data) => {
                 if ("Item" in data.response) {
                   navigate("/users");
-                  setType("users")
+                  setType("users");
                 } else {
                   navigate("/register");
                 }
               });
           }
         });
-      setLoading(false);
+        setLoading(false);
+       await web3Int().then(async (web3) => {
+        const networkKey = Object.keys(EventTicketing.networks)[0];
+        const ticketContract = new web3.eth.Contract(
+          EventTicketing.abi,
+          EventTicketing.networks[networkKey].address
+        );
+        setContract(ticketContract);
+        console.log(ticketContract)
+      });
     } catch (error) {
       console.error(error);
     }
@@ -60,13 +90,14 @@ export default function Navbar() {
       <div className="flex items-center justify-between p-3 bg-gray-800">
         <Link to="/">
           <div className="flex items-center">
-            <img style={{ width: "3rem" }} src="/logo.png" alt="logo" />
+            {/* <img style={{ width: "3rem" }} src="/logo.png" alt="logo" />
             <p
               className="text-xl lg:text-2xl font-bold text-white"
               style={{ fontFamily: "cursive" }}
             >
               InnerSerenity
-            </p>
+            </p> */}
+            <img src="/innerserenity.png" style={{ width: "12rem" }} />
           </div>
         </Link>
 
