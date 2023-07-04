@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.6;
+
 contract InnerserenityDApp {
     struct User {
         string name;
@@ -17,10 +18,9 @@ contract InnerserenityDApp {
     
     mapping(address => User) public users;
     mapping(address => Professional) public professionals;
-    mapping(bytes32 => address) public conversations;
     address[] public professionalAddresses;
     
-    event AppointmentRequested(address user, address professional, bytes32 conversationId);
+    event AppointmentRequested(address user, address professional);
     
     function createUser(string memory _name, uint _age, string memory _gender) public {
         User storage newUser = users[msg.sender];
@@ -65,13 +65,8 @@ contract InnerserenityDApp {
     function requestAppointment(address _professionalAddress) public {
         require(professionals[_professionalAddress].available, "The requested professional is not available");
         
-        bytes32 conversationId = keccak256(abi.encodePacked(msg.sender, _professionalAddress));
-        
-        conversations[conversationId] = msg.sender;
-        
-        emit AppointmentRequested(msg.sender, _professionalAddress, conversationId);
+        emit AppointmentRequested(msg.sender, _professionalAddress);
     }
-    
     
     function rateProfessional(address _professionalAddress, uint _score) public {
         require(_score >= 1 && _score <= 5, "Invalid rating score");
